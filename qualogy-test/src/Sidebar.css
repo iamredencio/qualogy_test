@@ -1,0 +1,38 @@
+.sidebar__body {
+    width: 20vw;
+    height: 100vh;
+    /* background-color: rgb(205, 237, 255); */
+    background-color: aliceblue;
+    display: grid;
+    justify-content: center;
+    padding-top: 25px;
+    border-right: 0.5px solid lightgray;
+}
+
+.sidebar__data_train {
+    width: 150px;
+    height: 150px;
+    background-color: cyan;
+    border: 1px lightgray solid;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sidebar__data_test {
+    width: 150px;
+    height: 150px;
+    background-color: blue;
+    border: 1px lightgray solid;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sidebar__data_slider {
+    margin: 5px;
+}
