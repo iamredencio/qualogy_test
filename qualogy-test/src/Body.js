@@ -39,8 +39,33 @@ function Body() {
     
     
     <div className='body__display'>
-    {animals.map(animal => (
+    {/* {animals.map(animal => ( */}
     <Link href="#">
+        <Card sx={{ maxWidth: 345, minWidth: 300  }}>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          SVM accuracy 74%
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+        Best parameters:  'C': 100, 'gamma': 'scale', 'kernel': 'poly'<br />
+        Accuracy Train set with best parameters 0.75: <br />
+        Accuracy Test set with best parameters 0.75: 
+        </Typography>
+      </CardContent>
+      {/* <CardActions>
+        <Button size="small">Share</Button>
+        <Button size="small">Learn More</Button>
+      </CardActions> */}
+    </Card>
+        </Link>
+
+        <Link href="#">
         <Card sx={{ maxWidth: 345, minWidth: 250  }}>
       <CardMedia
         component="img"
@@ -50,13 +75,13 @@ function Body() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {animal} 73%
+          RandForest accuracy 76%
         </Typography>
         <Typography variant="body2" color="text.secondary">
-        Accuracy 0.73: <br />
-        Best parameters:  'C': 100, 'gamma': 'scale', 'kernel': 'rbf'<br />
-        Accuracy Train set with best parameters 0.74: <br />
-        Accuracy Test set with best parameters 0.73: 
+
+        Best parameters:  'criterion': 'entropy',  'max_depth': 10, 'max_features': 'sqrt'<br />
+        Accuracy Train set with best parameters 0.81: <br />
+        Accuracy Test set with best parameters 0.77: 
         </Typography>
       </CardContent>
       {/* <CardActions>
@@ -65,7 +90,32 @@ function Body() {
       </CardActions> */}
     </Card>
         </Link>
-      ))}
+
+        <Link href="#">
+        <Card sx={{ maxWidth: 345, minWidth: 250  }}>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Logistic Reg accuracy 55%
+        </Typography>
+        <Typography variant="body2" color="text.secondary"><br />
+        Best parameters:  'C': 0.001, 'solver': 'newton-cg'<br />
+        Accuracy Train set with best parameters 0.56: <br />
+        Accuracy Test set with best parameters 0.56: 
+        </Typography>
+      </CardContent>
+      {/* <CardActions>
+        <Button size="small">Share</Button>
+        <Button size="small">Learn More</Button>
+      </CardActions> */}
+    </Card>
+        </Link>
+      {/* // ))} */}
 
     </div>
     </div>
