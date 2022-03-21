@@ -20,25 +20,15 @@ import numpy as np
 from pandas.core.reshape.reshape import get_dummies
 
 
-data_proc = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/colabdata/train_data.csv", index_col=0)
+data_proc = pd.read_csv("data/train_data.csv", index_col=0)
 
 # Open file in notepad, to eliminate error 0x83 utf
-test_data = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/colabdata/TestDataAccomodation.csv", encoding="utf-8", index_col=0)
-test_data
+test_data = pd.read_csv("data/TestDataAccomodation.csv", encoding="utf-8", index_col=0)
 
-"""#Analyze data
-## Half of the data is categorial other half is continuous
-"""
-
-data_proc.info()
-
-"""#Fill in empty spaces
-## Sample randomly
-"""
-
-#Random Sampling missng values
+#Random Sampling missing values
 data_proc = data_proc.apply(lambda x: np.where(x.isnull(), x.dropna().sample(len(x), replace=True), x))
-#Random Sampling missng values
+
+#Random Sampling missing values
 test_data = test_data.apply(lambda x: np.where(x.isnull(), x.dropna().sample(len(x), replace=True), x))
 
 """#Split data into train, test and validation sets
@@ -47,7 +37,7 @@ test_data = test_data.apply(lambda x: np.where(x.isnull(), x.dropna().sample(len
 
 data = pd.get_dummies(data_proc.drop('AcomType', axis=1))
 data["AcomType"] = data_proc["AcomType"]
-# data
+
 feature = data.drop('AcomType', axis=1)
 target = data['AcomType']
 
@@ -56,10 +46,6 @@ y = target.values
 
 X_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=41)
 X_train, X_valid, y_train, y_valid = train_test_split(X_trainval, y_trainval, random_state=3)
-
-print("Training set{}\nValidation set{}\nTest set{}".format(X_train.shape, X_valid.shape, X_test.shape))
-
-"""# Standardize data"""
 
 scaler = MinMaxScaler()
 scaler.fit(X_trainval)
@@ -75,10 +61,6 @@ scaler = MinMaxScaler()
 scaler.fit(test_data)
 
 test_data_scaled = scaler.transform(test_data)
-# test_data_scaled
-
-
-"""#Support Vector Machine"""
 
 def support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
     best_score = 0
@@ -97,15 +79,11 @@ def support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_
                               'kernel': kernel}
 
     svc = SVC(**best_parameters)
-    svc.fit(X_trainval_scaled,  y_trainval)
+    clf = svc.fit(X_trainval_scaled,  y_trainval)
     train_score = svc.score(X_trainval_scaled,  y_trainval)
     test_score = svc.score(X_test_scaled, y_test)
 
-    return best_score, best_parameters, train_score, test_score
-
-support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
-
-"""#Logistic regression"""
+    return clf, best_score, best_parameters, train_score, test_score
 
 def logistic_regression(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
     best_score = 0
@@ -123,15 +101,11 @@ def logistic_regression(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_tra
                               'solver': solver}
 
     logreg = LogisticRegression(**best_parameters)
-    logreg.fit(X_trainval_scaled,  y_trainval)
+    clf = logreg.fit(X_trainval_scaled,  y_trainval)
     train_score = logreg.score(X_trainval_scaled,  y_trainval)
     test_score = logreg.score(X_test_scaled, y_test)
 
-    return best_score, best_parameters, train_score, test_score
-
-logistic_regression(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
-
-"""#RandomForestClassifier"""
+    return clf, best_score, best_parameters, train_score, test_score
 
 def random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
     best_score = 0
@@ -150,15 +124,8 @@ def random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, y_valid, 
                               'criterion': criterion}
 
     rf = RandomForestClassifier(**best_parameters)
-    rf.fit(X_trainval_scaled,  y_trainval)
+    clf = rf.fit(X_trainval_scaled,  y_trainval)
     train_score = rf.score(X_trainval_scaled,  y_trainval)
     test_score = rf.score(X_test_scaled, y_test)
 
-    return best_score, best_parameters, train_score, test_score
-
-random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
-
-"""# https://medium.com/nmc-techblog/easy-drag-and-drop-in-react-22778b30ba37
-# https://medium.com/analytics-vidhya/classification-method-for-estimating-the-numbers-of-rings-of-abalone-bb13264dd186
-
-"""
+    return clf, best_score, best_parameters, train_score, test_score

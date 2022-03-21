@@ -1,0 +1,13 @@
+.droparea__zone {
+    display: flex;
+    width: 80vw;
+}
+
+.droparea {
+    display: flex;
+    width: 100%;
+}
+
+.droparea__summary {
+    margin: 5px;
+}
