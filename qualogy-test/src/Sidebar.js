@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
 import './Sidebar.css';
 
 
