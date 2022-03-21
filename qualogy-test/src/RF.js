@@ -9,22 +9,37 @@ function RF() {
     const [data, setData] = useState([{}])
 
     useEffect( () => {
-      fetch("/algorithms").then(
-        res => res.json()
-      ).then(
-        data => {
-          setData(data);
-          console.log(data);
-        }
-      )
+        const fetchData = async () => {
+            //     await fetch("/svm").then(
+            //     res => res.json()
+            //   ).then(
+            //     data => {
+            //       setData(data);
+            //       console.log(data);
+            //     }
+            //   )
+            // get the data from the api
+            const data = await fetch('/rf');
+            console.log(data);
+            // convert data to json
+            const json = await data.json();
+            // set state with the result
+            setData(json);
+            }
+        
+            // call the function
+            fetchData()
+            // make sure to catch any error
+            .catch(console.error);
+        
   
     }, [])
   return (
-    <div className='body__display'>{(typeof data.algorithms === 'undefined')?(
-        <p></p>
+    <div className=''>
+        {(typeof data === 'undefined')?(
+        <p>Nothing RF</p>
       ):(
-        data.algorithms.map((algorithm, i) => (
-          <Link href="#">
+        <Link href="#">
           <Card sx={{ maxWidth: 345, minWidth: 300  }}>
         <CardMedia
           component="img"
@@ -34,18 +49,18 @@ function RF() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-             {algorithm} accuracy 74% 
+             Ran For accuracy {data.accuracy} 
           </Typography>
           <Typography variant="body2" color="text.secondary">
-          Best parameters:  p<br />
-          Accuracy Train set with best parameters 0.75: <br />
-          Accuracy Test set with best parameters 0.75: 
+          Best parameters:  {data.best_parameters}<br />
+          Accuracy Train set: {data.train_score}<br />
+          Accuracy Test set: {data.test_score} 
           </Typography>
         </CardContent>
       </Card>
           </Link>
-        ))
-      )}</div>
+      )}
+    </div>
   )
 }
 

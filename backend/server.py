@@ -5,24 +5,24 @@ app = Flask(__name__)
 
 @app.route("/svm")
 def svm():
-    clf, best_score, best_parameters, train_score, test_score = support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, 
+    results = support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, 
     y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
-    return clf, best_score, best_parameters, train_score, test_score 
+    return results
 
 """#Logistic regression"""
 @app.route("/logreg")
 def logreg():
-    clf, best_score, best_parameters, train_score, test_score = logistic_regression(X_train_scaled,  y_train, X_valid_scaled, 
+    results = logistic_regression(X_train_scaled,  y_train, X_valid_scaled, 
     y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
 
-    return clf, best_score, best_parameters, train_score, test_score
+    return results
 
 """#RandomForestClassifier"""
 @app.route("/rf")
 def rf():
-    clf, best_score, best_parameters, train_score, test_score = random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, 
+    results = random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, 
     y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
-    return {"results": best_parameters}
+    return results
 
 
 @app.route("/algorithms")

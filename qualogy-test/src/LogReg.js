@@ -8,25 +8,51 @@ import Link from '@mui/material/Link';
 function LogReg() {
     const [data, setData] = useState([{}])
 
-    useEffect( () => {
-      fetch("/rf").then(
-        res => res.json()
-      ).then(
-        data => {
-          setData(data);
-          console.log(data);
+    useEffect(() => {
+        // declare the async data fetching function
+        const fetchData = async () => {
+          // get the data from the api
+          const data = await fetch('/logreg');
+          // convert the data to json
+          const json = await data.json();
+      
+          // set state with the result
+          setData(json);
+          console.log(json);
         }
-      )
-  
-    }, [])
+      
+        // call the function
+        fetchData()
+          // make sure to catch any error
+          .catch(console.error);;
+      }, [])
   return (
-    <div className='body__display'>{(typeof data.results === 'undefined')?(
-        <p>Nothing</p>
+    <div className=''>
+    {(typeof data === 'undefined')?(
+        <p>Nothing LogReg</p>
       ):(
-        data.algorithms.map((algorithm, i) => (
-          {i, algorithm}
-        ))
-      )}</div>
+        <Link href="#">
+          <Card sx={{ maxWidth: 345, minWidth: 300  }}>
+        <CardMedia
+          component="img"
+          height="140"
+          image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+             Log Reg accuracy {data.accuracy} 
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          Best parameters:  {data.best_parameters}<br />
+          Accuracy Train set: {data.train_score}<br />
+          Accuracy Test set: {data.test_score} 
+          </Typography>
+        </CardContent>
+      </Card>
+          </Link>
+      )}
+    </div>
   )
 }
 export default LogReg
