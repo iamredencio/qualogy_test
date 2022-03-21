@@ -9,34 +9,19 @@ function RF() {
     const [data, setData] = useState([{}])
 
     useEffect( () => {
-        const fetchData = async () => {
-            //     await fetch("/svm").then(
-            //     res => res.json()
-            //   ).then(
-            //     data => {
-            //       setData(data);
-            //       console.log(data);
-            //     }
-            //   )
-            // get the data from the api
-            const data = await fetch('/rf');
+        fetch("/rf").then(
+          res => res.json()
+        ).then(
+          data => {
+            setData(data);
             console.log(data);
-            // convert data to json
-            const json = await data.json();
-            // set state with the result
-            setData(json);
-            }
-        
-            // call the function
-            fetchData()
-            // make sure to catch any error
-            .catch(console.error);
-        
-  
-    }, [])
+          }
+        )
+    
+      }, [])
   return (
     <div className=''>
-        {(typeof data === 'undefined')?(
+        {(typeof data.accuracy === 'undefined')?(
         <p>Nothing RF</p>
       ):(
         <Link href="#">
@@ -49,10 +34,10 @@ function RF() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-             Ran For accuracy {data.accuracy} 
+             RanFor accuracy {data.accuracy} 
           </Typography>
           <Typography variant="body2" color="text.secondary">
-          Best parameters:  {data.best_parameters}<br />
+          Best parameters: {data.best_parameters}<br />
           Accuracy Train set: {data.train_score}<br />
           Accuracy Test set: {data.test_score} 
           </Typography>

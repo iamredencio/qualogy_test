@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,21 +8,19 @@ import Link from '@mui/material/Link';
 function SVM() {
     const [data, setData] = useState([{}])
 
-    const fetchData = useCallback(async () => {
-        const data = await fetch('/svm');
-        alert(data);
-        console.log(data);
-        setData(data);
+    useEffect( () => {
+        fetch("/svm").then(
+          res => res.json()
+        ).then(
+          data => {
+            setData(data);
+            console.log(data);
+          }
+        )
+    
       }, [])
-      
-      // the useEffect is only there to call `fetchData` at the right time
-      useEffect(() => {
-        fetchData()
-          // make sure to catch any error
-          .catch(console.error);;
-      }, [fetchData])
-  return (
-    <div className=''>
+      return (
+    <div className='body__display'>
         {(typeof data.accuracy === 'undefined')?(
         <p>Nothing SVM</p>
       ):(

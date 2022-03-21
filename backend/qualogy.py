@@ -63,11 +63,14 @@ scaler.fit(test_data)
 
 test_data_scaled = scaler.transform(test_data)
 
-def cleanup_results(best_score, best_parameters, train_score, test_score):
+
+def cleanup_results(best_score, best_parameters, train_score, test_score, clf):
+  best_parameters = '_'.join(map('-'.join, best_parameters.items()))
   return {'accuracy': ["{:.2f}".format(best_score)], 
-          'best_parameters': best_parameters,
+          'best_parameters': [best_parameters],
           'train_score': ["{:.2f}".format(train_score)], 
-          'test_score': ["{:.2f}".format(test_score)]}
+          'test_score': ["{:.2f}".format(test_score)],
+          'algorithm_predict': [clf]}
 
 @ignore_warnings(category=ConvergenceWarning)
 def support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
@@ -91,7 +94,7 @@ def support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_
     train_score = svc.score(X_trainval_scaled,  y_trainval)
     test_score = svc.score(X_test_scaled, y_test)
 
-    return cleanup_results(best_score, best_parameters, train_score, test_score)
+    return cleanup_results(best_score, best_parameters, train_score, test_score, clf)
 
 @ignore_warnings(category=ConvergenceWarning)
 def logistic_regression(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
@@ -114,7 +117,7 @@ def logistic_regression(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_tra
     train_score = logreg.score(X_trainval_scaled,  y_trainval)
     test_score = logreg.score(X_test_scaled, y_test)
 
-    return cleanup_results(best_score, best_parameters, train_score, test_score)
+    return cleanup_results(best_score, best_parameters, train_score, test_score, clf)
 
 @ignore_warnings(category=ConvergenceWarning)
 def random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test):
@@ -138,4 +141,37 @@ def random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, y_valid, 
     train_score = rf.score(X_trainval_scaled,  y_trainval)
     test_score = rf.score(X_test_scaled, y_test)
 
-    return cleanup_results(best_score, best_parameters, train_score, test_score)
+    return cleanup_results(best_score, best_parameters, train_score, test_score, clf)
+
+def get_recommendation(clf, profiles):
+    np_profiles = np.array(profiles) 
+    print(np_profiles)
+
+    test ={
+    'durationOfStay': np_profiles[:, 0],
+    'gender': np_profiles[:, 1], 
+    'Age': np_profiles[:, 2],
+    'kids': np_profiles[:, 3], 
+    'destinationCode': np_profiles[:, 4]
+    }
+
+    test = get_dummies(pd.DataFrame(test), columns =['destinationCode', 'gender'] )
+
+    empty_df = get_dummies(data_proc.drop("AcomType", axis=1)).reset_index().drop([x for x in range(len(data_proc))], axis=0)
+
+    new_test = pd.concat([empty_df, test], sort=False).fillna(0).drop("Id", axis=1)
+
+    test = list(new_test.values)
+        
+    return clf.predict(test)
+
+# svm_results = support_vector_machine(X_train_scaled,  y_train, X_valid_scaled, 
+#         y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
+
+# logreg_results = logistic_regression(X_train_scaled,  y_train, X_valid_scaled, 
+#     y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
+
+# rf_results = random_forest_classifier(X_train_scaled,  y_train, X_valid_scaled, 
+#     y_valid, X_trainval_scaled,  y_trainval, X_test_scaled, y_test)
+
+# print(svm_results)
